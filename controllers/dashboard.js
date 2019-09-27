@@ -1,9 +1,16 @@
+const Palm = require('../models/Palm.js');
+
+
 /**
  * GET /
  * Home page.
  */
-exports.getMain = (req, res) => {
+exports.getMain = async (req, res) => {
+
+  const palms = await Plam.find({}).exec();
+
   res.render('dashboard', {
-    title: 'Dashboard'
+    title: 'Dashboard',
+    palms: palms
   });
 };
