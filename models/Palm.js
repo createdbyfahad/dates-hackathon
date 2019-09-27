@@ -1,7 +1,34 @@
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
+const moment = require('moment');
 
 const constants = require('../constants');
+
+const healthSchema = new mongoose.Schema({
+    type: {
+        type: String,
+        enum: constants.palmHealth, // issue types
+        required: true
+    },
+    startDate: Date,
+    endDate: Date,
+    comment: String
+}, {_id: true,
+    toObject: { virtuals: true },
+    toJSON: { virtuals: true }
+});
+
+healthSchema.virtual('length').get(function(){
+    let d;
+    let start = new moment(this.startDate);
+    if(this.endDate){
+        d = new moment(this.endDate);
+    }else{
+        d = new moment()
+    }
+    let diff = d.diff(start, 'months', true);
+    return Math.round(diff);
+})
 
 
 const palmSchema = new mongoose.Schema({
@@ -30,20 +57,14 @@ const palmSchema = new mongoose.Schema({
         weight: Number,
         comment: String
     }],
-    health: [{
-        type: {
-            type: String,
-            enum: constants.palmHealth, // issue types
-            required: true
-        },
-        startDate: Date,
-        endDate: Date,
-        comment: String
-    }],
+    health: [healthSchema],
     barcode: String
-}, { timestamps: true });
+}, { timestamps: true, toObject: { virtuals: true },
+    toJSON: { virtuals: true } });
+
 
 palmSchema.plugin(AutoIncrement, {inc_field: 'id'});
+
 
 const Palm = mongoose.model('Palm', palmSchema);
 

@@ -1,0 +1,34 @@
+extends ../layout
+
+block content
+  h1 Add A Palm 🌴 Health
+  hr
+  .main.col-sm-6
+    if errors
+      div.alert.alert-danger(role='alert')
+        ul
+          each err in errors
+            li
+              b=err.param.toUpperCase()
+              span : #{err.msg}
+
+    form(method='POST' action='')
+      input(type='hidden', name='_csrf', value=_csrf)
+      .form-group.row
+        label.col-sm-3.col-form-label(for='type') Type
+        .col-sm-9
+          select.form-control(name='type', id='type')
+            each val in palmHealth
+              option=val
+      .form-group.row
+        label.col-sm-3.col-form-label(for='startDate') Start Date
+        .col-sm-6
+          input#startDate.form-control(name='startDate', type='date')
+      .form-group.row
+        label.col-sm-3.col-form-label(for='comment') Comment
+        .col-sm-9
+          textarea#comment.form-control(name='comment', placeholder="Describe the issue")
+      .form-group.row
+        .col-sm-10
+          button.btn.btn-primary(type='submit') Add
+

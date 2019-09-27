@@ -1,0 +1,93 @@
+extends ../layout
+
+block content
+  h1 View A Palm 🌴
+  hr
+  .main.col-sm-12
+    h2 Main Info
+    form()
+      .form-group.row
+        label.col-sm-3.col-form-label Type
+        .col-sm-9
+          b=palm.type
+      .form-group.row
+        label.col-sm-3.col-form-label Age
+        .col-sm-3
+          b #{palm.age} months
+      .form-group.row
+        label.col-sm-3.col-form-label Plantation Date
+        .col-sm-6
+          b #{palm.plantationDate.getFullYear()}-#{(palm.plantationDate.getMonth()+1)}-#{palm.plantationDate.getDate()}
+      .form-group.row
+        label.col-sm-3.col-form-label Row
+        .col-sm-3
+          b #{palm.location.row}
+      .form-group.row
+        label.col-sm-3.col-form-label Column
+        .col-sm-3
+          b #{palm.location.column}
+
+    h2 Interval Info
+    div.my-3.clearfix
+      h4.float-left Health History
+      a.btn.btn-primary.float-right(href='/dashboard/farm/' + palm.id+ '/health/add') Register issue
+
+    .row.d-block
+      table.table.table-hover
+        thead
+          tr
+            th(scope='col') Type
+            th(scope='col') Start
+            th(scope='col') End
+            th(scope='col') Length (months)
+            th(scope='col') Notes
+            th(scope='col') Healthy
+
+        tbody
+          for health in palm.health
+            tr
+              td=health.type
+              td #{health.startDate.getFullYear()}-#{(health.startDate.getMonth()+1)}-#{health.startDate.getDate()}
+              td
+                if health.endDate !== null
+                  p #{health.endDate.getFullYear()}-#{(health.endDate.getMonth()+1)}-#{health.endDate.getDate()}
+                else
+                  p.text-danger active
+              td=health.length
+              td=health.comment
+              td
+                if health.endDate == null
+                  a.btn.btn-outline-success(href='/dashboard/farm/' + palm.id+ '/health/'+ health.id+ '/healthy') Ok?
+
+    div.my-3.clearfix
+      h4.float-left Harvest
+
+    .row.d-block
+      table.table.table-hover
+        thead
+          tr
+            th(scope='col') Date
+            th(scope='col') Weight
+            th(scope='col') Notes
+
+        tbody
+          for harvest in palm.harvest
+            tr
+              td #{harvest.date.getFullYear()}-#{(harvest.date.getMonth() + 1)}-#{harvest.date.getDate()}
+              td #{harvest.weight}kg
+              td=harvest.comment
+
+    hr
+    form(method='POST' action='/dashboard/farm/'+palm.id+'/harvest/add').col-6
+      input(type='hidden', name='_csrf', value=_csrf)
+      .form-group.row
+        label.col-sm-3.col-form-label(for='weight') Weight
+        .col-sm-3
+            input#weight.form-control(name='weight', type='number', value=0)
+      .form-group.row
+        label.col-sm-3.col-form-label(for='comment') Comment
+        .col-sm-9
+            textarea#comment.form-control(name='comment', placeholder="Fill with info")
+      .form-group.row
+        .col-sm-10
+          button.btn.btn-success(type='submit') Harvest
