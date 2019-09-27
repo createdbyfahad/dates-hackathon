@@ -3,29 +3,34 @@ extends ../layout
 block content
   h1 View A Palm 🌴
   hr
-  .main.col-sm-12
-    h2 Main Info
-    form()
-      .form-group.row
-        label.col-sm-3.col-form-label Type
-        .col-sm-9
-          b=palm.type
-      .form-group.row
-        label.col-sm-3.col-form-label Age
-        .col-sm-3
-          b #{palm.age} months
-      .form-group.row
-        label.col-sm-3.col-form-label Plantation Date
-        .col-sm-6
-          b #{palm.plantationDate.getFullYear()}-#{(palm.plantationDate.getMonth()+1)}-#{palm.plantationDate.getDate()}
-      .form-group.row
-        label.col-sm-3.col-form-label Row
-        .col-sm-3
-          b #{palm.location.row}
-      .form-group.row
-        label.col-sm-3.col-form-label Column
-        .col-sm-3
-          b #{palm.location.column}
+  .main
+    .row
+      div.col-sm-6
+        h2 Main Info
+        form()
+          .form-group.row
+            label.col-sm-3.col-form-label Type
+            .col-sm-9
+              b=palm.type
+          .form-group.row
+            label.col-sm-3.col-form-label Age
+            .col-sm-3
+              b #{palm.age} months
+          .form-group.row
+            label.col-sm-3.col-form-label Plantation Date
+            .col-sm-6
+              b #{palm.plantationDate.getFullYear()}-#{(palm.plantationDate.getMonth()+1)}-#{palm.plantationDate.getDate()}
+          .form-group.row
+            label.col-sm-3.col-form-label Row
+            .col-sm-3
+              b #{palm.location.row}
+          .form-group.row
+            label.col-sm-3.col-form-label Column
+            .col-sm-3
+              b #{palm.location.column}
+      div.col-sm-6
+        img.d-block(src=qrCode)
+        b ID: #{palm.id}
 
     h2 Interval Info
     div.my-3.clearfix
@@ -63,7 +68,7 @@ block content
       h4.float-left Harvest
 
     .row.d-block
-      table.table.table-hover
+      table.table.table-hover.col-sm-12.col-md-6
         thead
           tr
             th(scope='col') Date
@@ -73,7 +78,7 @@ block content
         tbody
           for harvest in palm.harvest
             tr
-              td #{harvest.date.getFullYear()}-#{(harvest.date.getMonth() + 1)}-#{harvest.date.getDate()}
+              td #{harvest.date.getFullYear()}-#{(harvest.date.getMonth() + 1)}-#{harvest.date.getDate()} #{harvest.date.getHours()}:#{harvest.date.getMinutes()}:#{harvest.date.getSeconds()}
               td #{harvest.weight}kg
               td=harvest.comment
 

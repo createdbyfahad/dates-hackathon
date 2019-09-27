@@ -70,10 +70,13 @@ exports.postTree = async (req, res) => {
 exports.getTree = async (req, res) => {
   const id = req.params.id;
   const palm = await Palm.findOne({id: id}).exec();
-  if(palm==null) return res.redirect('/dashboard/farm/')
+  if(palm==null) return res.redirect('/dashboard/farm/');
+  const qrCode = await palm.qrCode;
+  console.log("qrcode", qrCode)
   res.render('farm/view', {
     title: 'Farm',
-    palm: palm
+    palm: palm,
+    qrCode: qrCode
   });
 };
 

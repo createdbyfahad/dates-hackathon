@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 const moment = require('moment');
+var QRCode = require('qrcode')
 
 const constants = require('../constants');
 
@@ -57,10 +58,43 @@ const palmSchema = new mongoose.Schema({
         weight: Number,
         comment: String
     }],
-    health: [healthSchema],
-    barcode: String
+    health: [healthSchema]
 }, { timestamps: true, toObject: { virtuals: true },
     toJSON: { virtuals: true } });
+
+
+palmSchema.virtual('qrCode').get(async function(){
+    console.log("process.env.BASE_URL", process.env.BASE_URL)
+    const url = process.env.BASE_URL + '/dashboard/farm/' + this.id;
+    try{
+        const code = await QRCode.toDataURL(url);
+        return code;
+    }catch{
+        return false
+    }
+});
+
+palmSchema.virtual('lastHarvest').get(function(){
+    if(this.harvest.length == 0) return '';
+
+    const harvest = this.harvest[this.harvest.length - 1];
+    const m = moment(harvest.date);
+    return m.format('MMMM Do YYYY, h:mm:ss a');
+})
+
+palmSchema.virtual('yearHarvestTotal').get(function(){
+    if(this.harvest.length == 0) return '0';
+    const today = new Date();
+    const d = new Date(today.getFullYear(), 0, 0);
+    var total = 0;
+    for (let i = 0; i < this.harvest.length; i ++){
+        const harvest = this.harvest[i];
+        if(harvest.date > d){
+            total += harvest.weight;
+        }
+    }
+    return total;
+})
 
 
 palmSchema.plugin(AutoIncrement, {inc_field: 'id'});
