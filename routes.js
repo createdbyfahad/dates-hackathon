@@ -28,7 +28,7 @@ dashboard.post('/farm/:id(\\d+)/health/add', [
 dashboard.get('/farm/:id(\\d+)/health/:healthId/healthy', controller.processHealth);
 
 dashboard.post('/farm/:id(\\d+)/harvest/add', [
-    check('weight').isIn(constants.palmHealth),
+    check('weight').isFloat({min: 0.1, max: 20}),
     check('comment').isLength({ min: 0, max: 140 })
 ], controller.postHarvest);
 

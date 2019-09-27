@@ -138,6 +138,10 @@ exports.processHealth = async (req, res) => {
 exports.postHarvest = async (req, res) => {
   const body = req.body;
   const palmId = req.params.id;
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.redirect('/dashboard/farm/' + palmId)
+  }
   const palm = await Palm.findOne({id: palmId}).exec();
   if(palm==null) return res.redirect('/dashboard/farm/');
   palm.harvest.push({
