@@ -1,0 +1,24 @@
+extends ../layout
+
+block content
+  h1 Farm
+  p.lead Here are your palms
+  a.btn.btn-primary(href='/dashboard/farm/add') Add A Palm 🌴
+  hr
+  .row
+    table.table.table-hover
+      thead
+        tr
+          th(scope='col') ID
+          th(scope='col') Type
+          th(scope='col') Age (months)
+          th(scope='col') Location
+
+          th(scope='col') Last Harvest
+      tbody
+        for palm in palms
+          tr
+            th(scope='row')=palm.id
+            td=palm.type
+            td=palm.age
+            td ""

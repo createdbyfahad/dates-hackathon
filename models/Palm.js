@@ -1,23 +1,27 @@
 const mongoose = require('mongoose');
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
+const constants = require('../constants');
+
+
 const palmSchema = new mongoose.Schema({
+    farmerID: String,
     type: {
         type: String,
-        enum: [''], // palm types
+        enum: constants.palmTypes, // palm types
         required: true
     },
     age: Number,
     location: {row: Number, column: Number},
     mapLocation: {
         type: {
-            type: String, // Don't do `{ location: { type: String } }`
-            enum: ['Point'], // 'location.type' must be 'Point'
-            required: true
+            type: String,
+            enum: ['Point'],
+            required: false
         },
         coordinates: {
             type: [Number],
-            required: true
+            required: false
         }
     },
     plantationDate: Date,
@@ -29,7 +33,7 @@ const palmSchema = new mongoose.Schema({
     health: [{
         type: {
             type: String,
-            enum: [''], // issue types
+            enum: constants.palmHealth, // issue types
             required: true
         },
         startDate: Date,

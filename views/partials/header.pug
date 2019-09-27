@@ -11,11 +11,12 @@
         li.nav-item(class=(title === 'Home') ? 'active' : undefined)
           a.nav-link(href='/') Home
         li.nav-item(class=(title === 'Dashboard') ? 'active' : undefined)
-          a.nav-link(href='/dashboard') Dashboard 
-        li.nav-item(class=(title === 'Contact') ? 'active' : undefined)
-          a.nav-link(href='/contact') Contact
-        li.nav-item(class=(title === 'Status') ? 'active' : undefined)
-          a.nav-link(href='/status') Status
+          a.nav-link(href='/dashboard') Dashboard
+        li.nav-item(class=(title === 'Farm') ? 'active' : undefined)
+          a.nav-link(href='/dashboard/farm') Farm
+        li.nav-item(class=(title === 'Support') ? 'active' : undefined)
+          a.nav-link(href='/support') Support
+
       ul.nav.navbar-nav.ml-auto
         if !user
           li.nav-item(class=(title === 'Login') ? 'active' : undefined)

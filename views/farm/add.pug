@@ -1,0 +1,45 @@
+extends ../layout
+
+block content
+  h1 Add A Palm 🌴
+  hr
+  .main.col-sm-6
+    if errors
+      div.alert.alert-danger(role='alert')
+        ul
+          each err in errors
+            li
+              b=err.param.toUpperCase()
+              span : #{err.msg}
+
+    form(method='POST' action='')
+      input(type='hidden', name='_csrf', value=_csrf)
+      .form-group.row
+        label.col-sm-3.col-form-label(for='type') Type
+        .col-sm-9
+          select.form-control(name='type', id='type')
+            each val in palmTypes
+              option=val
+      .form-group.row
+        label.col-sm-3.col-form-label(for='age') Age
+        .col-sm-3
+          input#age.form-control(name='age', type='number', value=0)
+        span months
+      .form-group.row
+        label.col-sm-3.col-form-label(for='plantation') Plantation Date
+        .col-sm-6
+          input#plantation.form-control(name='plantation', type='date', value=0)
+      .form-group.row
+        label.col-sm-3.col-form-label(for='row') Location
+        .col-sm-3
+          input#row.form-control(name='locationRow', type='number', value=0)
+        span Row
+      .form-group.row
+        label.col-sm-3.col-form-label(for='column') Location
+        .col-sm-3
+          input#column.form-control(name='locationColumn', type='number', value=0)
+        span Column
+      .form-group.row
+        .col-sm-10
+          button.btn.btn-primary(type='submit') Add
+

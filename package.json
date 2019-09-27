@@ -1,16 +1,13 @@
 {
-  "name": "hackathon-starter",
-  "version": "5.2.0",
-  "description": "A boilerplate for Node.js web applications",
+  "name": "dates-hackathon",
+  "version": "1.0.0",
+  "description": "Dates Hackathon App for Farmers to Increase Production",
   "repository": {
     "type": "git",
     "url": "https://github.com/sahat/hackathon-starter.git"
   },
   "license": "MIT",
-  "author": "Sahat Yalkabov",
-  "contributors": [
-    "Yashar Fakhari (https://github.com/YasharF)"
-  ],
+  "author": "Fahad Alarefi",
   "scripts": {
     "postinstall": "npm rebuild node-sass",
     "start": "node app.js",
@@ -39,6 +36,7 @@
     "express-handlebars": "^3.1.0",
     "express-session": "^1.16.2",
     "express-status-monitor": "^1.2.6",
+    "express-validator": "^6.2.0",
     "fbgraph": "^1.4.4",
     "googleapis": "^42.0.0",
     "instagram-node": "^0.5.8",

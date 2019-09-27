@@ -9,7 +9,7 @@ exports.getContact = (req, res) => {
   const unknownUser = !(req.user);
 
   res.render('contact', {
-    title: 'Contact',
+    title: 'Support',
     unknownUser,
   });
 };
