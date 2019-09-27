@@ -10,6 +10,6 @@ RUN npm install --production
 COPY .env.example /starter/.env.example
 COPY . /starter
 
-CMD ["npm","start"]
+RUN npm install -g nodemon
 
 EXPOSE 8080

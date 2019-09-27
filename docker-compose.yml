@@ -15,4 +15,4 @@ services:
     volumes:
      - .:/starter
      - /starter/node_modules
-     
+    command: nodemon app.js
