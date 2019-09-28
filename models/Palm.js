@@ -5,6 +5,7 @@ var QRCode = require('qrcode')
 
 const constants = require('../constants');
 
+
 const healthSchema = new mongoose.Schema({
     type: {
         type: String,
@@ -96,6 +97,51 @@ palmSchema.virtual('yearHarvestTotal').get(function(){
     return total;
 })
 
+palmSchema.virtual('lastYearHarvestTotal').get(function(){
+    if(this.harvest.length == 0) return '0';
+    const today = new Date();
+    const d = new Date(today.getFullYear(), 0, 0);
+    const lastd = new Date(today.getFullYear() - 1, 0, 0);
+    var total = 0;
+    for (let i = 0; i < this.harvest.length; i ++){
+        const harvest = this.harvest[i];
+        if(harvest.date > lastd && harvest.date < d){
+            total += harvest.weight;
+        }
+    }
+    return total;
+});
+
+palmSchema.virtual('compareYearHarvestTotal').get(function(){
+    if(this.harvest.length == 0) return 0;
+    const thisYear = new Date();
+    thisYear.setFullYear(thisYear.getFullYear() - 1)
+    const lastYear = new Date();
+    lastYear.setFullYear(lastYear.getFullYear() - 2)
+    var thisYearTotal = 0;
+    var lastYearTotal = 0;
+    for (let i = 0; i < this.harvest.length; i ++){
+        const harvest = this.harvest[i];
+        if(harvest.date > thisYear){
+            thisYearTotal += harvest.weight;
+        }else if(harvest.date > lastYear){
+            lastYearTotal += harvest.weight;
+        }
+    }
+    let diff = thisYearTotal - lastYearTotal;
+    let sign = Math.sign(diff);
+    console.log("palm.location", this.location);
+    console.log("thisYearTotal", thisYearTotal);
+    console.log("lastYearTotal", lastYearTotal);
+    console.log("sign", sign);
+    if (lastYearTotal == 0) {
+        lastYearTotal = 1
+    }
+    if(sign < 0){
+        return -(Math.abs(diff) / lastYearTotal);
+    }
+    return Math.abs(diff) / lastYearTotal;
+});
 
 palmSchema.plugin(AutoIncrement, {inc_field: 'id'});
 

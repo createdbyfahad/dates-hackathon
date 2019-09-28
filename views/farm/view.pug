@@ -31,6 +31,21 @@ block content
       div.col-sm-6
         img.d-block(src=qrCode)
         b ID: #{palm.id}
+        div
+          b Log a harvest
+          form(method='POST' action='/dashboard/farm/' + palm.id + '/harvest/add').col-6
+            input(type='hidden', name='_csrf', value=_csrf)
+            .form-group.row
+              label.col-sm-3.col-form-label(for='weight') Weight
+              .col-sm-3
+                input#weight.form-control(name='weight', type='text', value=0)
+            .form-group.row
+              label.col-sm-3.col-form-label(for='comment') Comment
+              .col-sm-9
+                textarea#comment.form-control(name='comment', placeholder="Fill with info")
+            .form-group.row
+              .col-sm-10
+                button.btn.btn-success(type='submit') Harvest
 
     h2 Interval Info
     div.my-3.clearfix
@@ -82,17 +97,4 @@ block content
               td #{harvest.weight}kg
               td=harvest.comment
 
-    hr
-    form(method='POST' action='/dashboard/farm/'+palm.id+'/harvest/add').col-6
-      input(type='hidden', name='_csrf', value=_csrf)
-      .form-group.row
-        label.col-sm-3.col-form-label(for='weight') Weight
-        .col-sm-3
-            input#weight.form-control(name='weight', type='text', value=0)
-      .form-group.row
-        label.col-sm-3.col-form-label(for='comment') Comment
-        .col-sm-9
-            textarea#comment.form-control(name='comment', placeholder="Fill with info")
-      .form-group.row
-        .col-sm-10
-          button.btn.btn-success(type='submit') Harvest
+

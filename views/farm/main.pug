@@ -12,15 +12,18 @@ block content
           th(scope='col') ID
           th(scope='col') Type
           th(scope='col') Age (months)
-          th(scope='col') Harvest (year)
           th(scope='col') Location
+          th(scope='col') Harvest (year)
           th(scope='col') Last Harvest
+          th(scope='col')
       tbody
         for palm in palms
           tr
             th(scope='row')=palm.id
             td=palm.type
             td=palm.age
-            td #{palm.yearHarvestTotal}kg
             td #{palm.location.row}x#{palm.location.column}
+            td #{palm.yearHarvestTotal}kg
             td=palm.lastHarvest
+            td
+              a(href='/dashboard/farm/' + palm.id) more

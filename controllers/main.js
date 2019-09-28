@@ -1,14 +1,67 @@
+const {validationResult } = require('express-validator');
+const moment = require('moment');
+
 const Palm = require('../models/Palm.js');
 const constants = require('../constants');
-const {validationResult } = require('express-validator');
 /**
  * GET /
  * Home page.
  */
 exports.getMain = async (req, res) => {
+  const palms = await Palm.find({}).exec();
+  var harvests = [];
+  var progressYr = {};
+  var minRow = 0;
+  var maxRow = 0;
 
+  var minColumn = 0;
+  var maxColumn = 0;
+  palms.forEach(palm => {
+    palm.harvest.forEach(harvest => {
+      let d = moment(harvest.date);
+      let ob = {
+        x: d.format('MM-YYYY'),
+        y: harvest.weight
+      }
+      let h = harvests.findIndex(ha => {
+        if (ob.x == ha.x){
+          return true
+        }
+        return false
+      })
+      if(h >= 0){
+        harvests[h].y += ob.y
+      }else{
+        harvests.push(ob)
+      }
+    })
+    let k = palm.location.row.toString() + palm.location.column.toString();
+    if(palm.location.row < minRow)
+      minRow = palm.location.row;
+    if(palm.location.row > maxRow)
+      maxRow = palm.location.row;
+    if(palm.location.column < minColumn)
+      minColumn = palm.location.column;
+    if(palm.location.column > maxColumn)
+      maxColumn = palm.location.column;
+
+    console.log({minRow,
+      minColumn,
+      maxRow,
+      maxColumn})
+    progressYr[k] = palm.compareYearHarvestTotal;
+  });
+  console.log(harvests)
+  console.log(progressYr)
   res.render('dashboard', {
-    title: 'Dashboard'
+    title: 'Dashboard',
+    palms: palms,
+    harvests: JSON.stringify(harvests),
+    progressYr: JSON.stringify(progressYr),
+    minRow,
+    minColumn,
+    maxRow,
+    maxColumn
   });
 };
 
