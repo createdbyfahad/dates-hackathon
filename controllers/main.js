@@ -50,7 +50,7 @@ exports.getMain = async (req, res) => {
       minColumn,
       maxRow,
       maxColumn})
-    progressYr[k] = palm.compareYearHarvestTotal;
+    progressYr[k] = [palm.compareYearHarvestTotal, palm.type];
   });
   console.log(progressYr)
   res.render('dashboard', {

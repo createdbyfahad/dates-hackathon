@@ -5,7 +5,6 @@ var QRCode = require('qrcode')
 
 const constants = require('../constants');
 
-
 const healthSchema = new mongoose.Schema({
     type: {
         type: String,
@@ -65,8 +64,8 @@ const palmSchema = new mongoose.Schema({
 
 
 palmSchema.virtual('qrCode').get(async function(){
-    console.log("process.env.BASE_URL", process.env.BASE_URL)
-    const url = process.env.BASE_URL + '/dashboard/farm/' + this.id;
+    // console.log("process.env.BASE_URL", process.env.BASE_URL)
+    const url = constants.base_url + '/dashboard/farm/' + this.id;
     try{
         const code = await QRCode.toDataURL(url);
         return code;

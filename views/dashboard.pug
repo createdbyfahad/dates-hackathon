@@ -49,12 +49,13 @@ block scripts
     const pYr = !{progressYr}
     console.log(pYr)
     Object.keys(pYr).forEach(function (k) {
-      let v = pYr[k]
+      let v = pYr[k][0]
+      let v1 = pYr[k][1]
       let ctx1 = $("td[data-index='"+k+"']");
       if(ctx1 !== undefined){
         // found the cell fill with info
         let growth = Math.round(v*100);
-        ctx1.html("🌴<br /><b>"+Math.round(v*100)+"%</b>");
+        ctx1.html("🌴 "+v1+"<br /><b>"+Math.round(v*100)+"%</b>");
         if(growth > 0){
           let shade = Math.abs(growth) / 200;
           console.log(shade)
