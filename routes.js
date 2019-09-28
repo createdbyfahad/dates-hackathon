@@ -32,6 +32,7 @@ dashboard.post('/farm/:id(\\d+)/harvest/add', [
     check('comment').isLength({ min: 0, max: 140 })
 ], controller.postHarvest);
 
+dashboard.get('/faker', controller.fakerSeed)
 
 
 

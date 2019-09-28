@@ -37,6 +37,7 @@
     "express-session": "^1.16.2",
     "express-status-monitor": "^1.2.6",
     "express-validator": "^6.2.0",
+    "faker": "^4.1.0",
     "fbgraph": "^1.4.4",
     "googleapis": "^42.0.0",
     "instagram-node": "^0.5.8",

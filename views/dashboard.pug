@@ -55,14 +55,17 @@ block scripts
         // found the cell fill with info
         let growth = Math.round(v*100);
         ctx1.html("🌴<br /><b>"+Math.round(v*100)+"%</b>");
-        if(growth > 100){
-          let shade = Math.abs(growth) / 1000;
-          ctx1.css("background-color", shadeColor("#098b2b", shade))
+        if(growth > 0){
+          let shade = Math.abs(growth) / 200;
+          console.log(shade)
+
+          ctx1.css("background-color", shadeColor("#098b2b", (1-shade) * 100))
         }else if(growth == 0){
           ctx1.css("background-color", "#dee2e6")
         }else{
-          let shade = Math.abs(growth) / 1000;
-          ctx1.css("background-color", shadeColor("#af303d", shade))
+          let shade = Math.abs(growth) / 200;
+          console.log(shade)
+          ctx1.css("background-color", shadeColor("#af303d", (1-shade) * 100))
         }
       }
     });
@@ -76,8 +79,9 @@ block content
   .row
     h4 Total farm harvest over the years
     canvas(id="myChart" width="400" height="200")
-  .row
-    h4 Map of plams and their harvest of this year compared to last year
+  hr
+  .row.mt-3
+    h4 Map of palms and their harvest of this year compared to last year
     table.table.table-hover.fixed-width
       thead
         tr

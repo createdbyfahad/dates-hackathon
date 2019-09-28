@@ -1,5 +1,6 @@
 const {validationResult } = require('express-validator');
 const moment = require('moment');
+const faker = require('faker');
 
 const Palm = require('../models/Palm.js');
 const constants = require('../constants');
@@ -20,7 +21,7 @@ exports.getMain = async (req, res) => {
     palm.harvest.forEach(harvest => {
       let d = moment(harvest.date);
       let ob = {
-        x: d.format('MM-YYYY'),
+        x: d.format('YYYY-MM'),
         y: harvest.weight
       }
       let h = harvests.findIndex(ha => {
@@ -51,12 +52,11 @@ exports.getMain = async (req, res) => {
       maxColumn})
     progressYr[k] = palm.compareYearHarvestTotal;
   });
-  console.log(harvests)
   console.log(progressYr)
   res.render('dashboard', {
     title: 'Dashboard',
     palms: palms,
-    harvests: JSON.stringify(harvests),
+    harvests: JSON.stringify(harvests.sort((a, b) => (a.x > b.x) ? 1 : -1)),
     progressYr: JSON.stringify(progressYr),
     minRow,
     minColumn,
@@ -206,7 +206,53 @@ exports.postHarvest = async (req, res) => {
     comment: body.comment
   });
   palm.save((err) => {
-    console.log("err", err)
+    console.log("err", err);
     return res.redirect('/dashboard/farm/' + palm.id)
   })
 };
+
+
+exports.fakerSeed = async (req, res) => {
+  // res.send("test")
+  console.log(faker)
+  res.send(faker.date.between('2015-01-01', '2015-12-31'))
+  const pt = constants.palmTypes;
+  const ph = constants.palmHealth;
+  let pd = faker.date.between('2010-01-01', '2019-08-31');
+  for(let i = 0; i < 10; i++){
+    for(let j = 0; j < 10; j++){
+      let harvests = [];
+      for(let ii=0; ii < 30; ii++){
+        harvests.push({
+          date: faker.date.between(pd, '2019-09-28'),
+          weight: (Math.random() * 10) + 1,
+          comment: faker.lorem.sentence()
+        })
+      }
+      let health = [];
+      for(let ii=0; ii < 5; ii++){
+        let startDate = faker.date.between(pd, '2019-09-20')
+        health.push({
+          type: ph[Math.floor(Math.random()*ph.length)],
+          startDate: startDate,
+          endDate: (Math.random() > 0.5)? faker.date.between(startDate, '2019-09-28'): null,
+          comment: faker.lorem.sentence()
+        })
+      }
+      const palm = new Palm({
+        farmerID: req.user.id,
+        type: pt[Math.floor(Math.random()*pt.length)],
+        age: Math.floor(Math.random() * 30) + 1,
+        location: {row: i, column: j},
+        plantationDate: pd,
+        harvest: harvests,
+        health
+      });
+      palm.save((err) => {
+        console.log("err", err)
+      })
+
+    }
+  }
+  return res.send("success")
+}

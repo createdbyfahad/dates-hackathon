@@ -94,7 +94,7 @@ palmSchema.virtual('yearHarvestTotal').get(function(){
             total += harvest.weight;
         }
     }
-    return total;
+    return Math.round(total * 100) / 100;
 })
 
 palmSchema.virtual('lastYearHarvestTotal').get(function(){
