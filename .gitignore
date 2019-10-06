@@ -1,3 +1,5 @@
+report.*.json
+
 lib-cov
 *.seed
 *.log
