@@ -1,6 +1,5 @@
-# Dates Hackathon Winner Project :palm:
+# Nakhlaty (Winner)
 Basic proof-of-concept product that is used to track palms 🌴 production and health in farms.
-
 
 ## Screenshots
 <p>
